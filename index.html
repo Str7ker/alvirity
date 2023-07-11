@@ -5,26 +5,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
-    <script>
-        AFRAME.registerComponent('vidhandler', {
-            init: function () {
-                this.toggle = false;
-                this.vid = document.querySelector("#spider")
-                this.vid.pause()
-            },
-            tick: function () {
-                if (this.el.object3D.visible == true) {
-                    if (!this.toggle) {
-                        this.toggle = true;
-                        this.vid.play();
-                    }
-                } else {
-                    this.toggle = false;
-                    this.vid.pause();
-                }
-            }
-        });
-    </script>
+
 </head>
 
 <body>
@@ -40,7 +21,7 @@
 
         <a-entity mindar-image-target="targetIndex: 0" vidhandler>
 
-            <a-plane src="#spider" position="0 0 0" height="0.552" width="1" rotation="0 0 0" video-handler webkit-playsinline playsinline></a-plane>
+            <a-plane src="#spider" position="0 0 0" height="0.552" width="1" rotation="0 0 0" webkit-playsinline playsinline></a-plane>
         </a-entity>
 
 
