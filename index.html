@@ -4,9 +4,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="apple-mobile-web-app-capable" content="yes">
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/Str7ker/mindar@main/style.css;"></script>
+    <script src="https://cdn.jsdelivr.net/gh/Str7ker/mindar@main/js.js;"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/Str7ker/mindar@main/hide-on-play.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/Str7ker/mindar@main/play-on-click.js"></script>
     <script>
         AFRAME.registerComponent('vidhandler', {
             init: function () {
@@ -30,30 +30,21 @@
 </head>
 
 <body>
+    <button class="btn">Нажми на меня</button>
+
     <a-scene mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/Str7ker/mindar@main/banki.mind;"
         color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false"
         device-orientation-permission-ui="enabled: false">
 
         <a-assets>
-            <video id="spider" src="https://cdn.jsdelivr.net/gh/Str7ker/mindar@main/com%20(online-video-cutter.com).mp4"
-                webkit-playsinline playsinline></video>
+            <video id="spider" src="https://cdn.jsdelivr.net/gh/Str7ker/mindar@main/com%20(online-video-cutter.com).mp4" webkit-playsinline playsinline></video>
         </a-assets>
 
-        <a-camera position="0 0 0" look-controls="enabled: false">
-            <a-entity position="0 0 -1.5" text="align: center;
-            width: 6;
-            wrapCount: 100;
-            color: black;
-            value: Click or tap to start video" hide-on-play="#spider">
-            </a-entity>
-        </a-camera>
+        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
         <a-entity mindar-image-target="targetIndex: 0" vidhandler>
-
-            <a-plane src="#spider" position="0 0 0" height="0.552" width="1" rotation="0 0 0" video-handler
-                webkit-playsinline playsinline></a-plane>
+            <a-video src="#spider" position="0 0 0" height="0.552" width="1" rotation="0 0 0" video-handler webkit-playsinline playsinline></a-video>
         </a-entity>
-
 
 
     </a-scene>
