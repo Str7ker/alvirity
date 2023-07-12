@@ -39,17 +39,20 @@
     opacity: 0.9;">Нажми на меня</button>
 
     <a-scene mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/Str7ker/mindar@main/banki.mind"
-        color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false"
-        device-orientation-permission-ui="enabled: false">
+    cursor='rayOrigin: mouse; fuse: true; fuseTimeout: 0;'
+    raycaster="objects: [gps-projected-entity-place];"
+    vr-mode-ui='enabled: false' 
+    embedded 
+    arjs='sourceType: webcam; debugUIEnabled: false'>
 
         <a-assets>
-            <video id="spider" src="https://cdn.jsdelivr.net/gh/Str7ker/mindar@main/com%20(online-video-cutter.com).mp4" autoplay webkit-playsinline playsinline crossorigin="anonymous"></video>
+            <video id="spider" src="https://cdn.jsdelivr.net/gh/Str7ker/mindar@main/com%20(online-video-cutter.com).mp4" webkit-playsinline playsinline crossorigin="anonymous"></video>
         </a-assets>
 
         <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-        <a-entity mindar-image-target="targetIndex: 0">
-            <a-video src="#spider" position="0 0 0" height="0.552" width="1" rotation="0 0 0" webkit-playsinline playsinline></a-video>
+        <a-entity mindar-image-target="targetIndex: 0" vidhandler>
+            <a-video src="#spider" position="0 0 0" height="0.552" width="1" rotation="0 0 0" video-handler webkit-playsinline playsinline></a-video>
         </a-entity>
 
 
