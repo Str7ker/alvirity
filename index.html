@@ -39,21 +39,18 @@
 </head>
 
 <body>
-    <button class="btn" onclick="className = 'btn hide'" style="width: 100%;
-    height: 100%;
-    z-index: 10;
-    position: fixed;
-    /* background-color: white; */
-    font-size: 100%;
-    font-weight: 600;
-    opacity: 0.9;">Нажми на меня</button>
+    <div style='position: fixed; top: 10px; width: 100%; text-align: center; z-index: 1; color: grey'>
+        
+        <button>Play video</button> - if the plane is black on mobile.
+    </div>
+   
     <a-scene
-        mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/examples/image-tracking/assets/card-example/card.mind;"
+        mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/Str7ker/mindar@main/banki.mind"
         color-space="sRGB" renderer="colorManagement: true" vr-mode-ui="enabled: false"
         device-orientation-permission-ui="enabled: false" cursor="rayOrigin: mouse;"
         raycaster="objects: .clickable">
         <a-assets>
-            <video id="video" src="https://gftruj.github.io/webzamples/aframe/assets/videos/sintel_trailer-480p.mp4" preload>
+            <video id="video" src="https://cdn.jsdelivr.net/gh/Str7ker/mindar@main/com%20(online-video-cutter.com).mp4" preload>
             </video>
         </a-assets>
 
