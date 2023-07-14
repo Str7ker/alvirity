@@ -2,72 +2,262 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-image.prod.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Str7ker/mindar@main/style.css">
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/hiukim/mind-ar-js@1.1.4/dist/mindar-image-aframe.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.2/dist/mindar-image-aframe.prod.js"></script>
     <script>
-        AFRAME.registerComponent("video-controller", {
-            init: function () {
-                const target = document.getElementById("target");
-                const btn = document.querySelector("button");
-                const video = document.getElementById("video");
+        const showInfo = () => {
+            let y = 0;
+            const profileButton = document.querySelector("#profile-button");
+            const webButton = document.querySelector("#web-button");
+            const emailButton = document.querySelector("#email-button");
+            const locationButton = document.querySelector("#location-button");
+            const text = document.querySelector("#text");
 
-                // detect target found
-                target.addEventListener("targetFound", event => {
-                    console.log("target found");
-                    this.found = true;
-                    video.play();
-                });
-                // detect target lost
-                target.addEventListener("targetLost", event => {
-                    console.log("target lost");
-                    this.found = false
-                    video.pause();
-                });
-                // detect click event
-                btn.addEventListener("click", event => {
-                    console.log("btn click");
-                    if (this.found)
-                        video.play();
-                });
+            profileButton.setAttribute("visible", true);
+            setTimeout(() => {
+                webButton.setAttribute("visible", true);
+            }, 300);
+            setTimeout(() => {
+                emailButton.setAttribute("visible", true);
+            }, 600);
+            setTimeout(() => {
+                locationButton.setAttribute("visible", true);
+            }, 900);
+
+            let currentTab = '';
+            webButton.addEventListener('click', function (evt) {
+                text.setAttribute("value", "https://softmind.tech");
+                currentTab = 'web';
+            });
+            emailButton.addEventListener('click', function (evt) {
+                text.setAttribute("value", "hello@softmind.tech");
+                currentTab = 'email';
+            });
+            profileButton.addEventListener('click', function (evt) {
+                text.setAttribute("value", "AR, VR solutions and consultation");
+                currentTab = 'profile';
+            });
+            locationButton.addEventListener('click', function (evt) {
+                console.log("loc");
+                text.setAttribute("value", "Vancouver, Canada | Hong Kong");
+                currentTab = 'location';
+            });
+
+            text.addEventListener('click', function (evt) {
+                if (currentTab === 'web') {
+                    window.location.href = "https://softmind.tech";
+                }
+            });
+        }
+
+        const showPortfolio = (done) => {
+            const portfolio = document.querySelector("#portfolio-panel");
+            const paintandquestPreviewButton = document.querySelector("#paintandquest-preview-button");
+
+            let y = 0;
+            let currentItem = 0;
+
+            portfolio.setAttribute("visible", true);
+
+            const showPortfolioItem = (item) => {
+                for (let i = 0; i <= 2; i++) {
+                    document.querySelector("#portfolio-item" + i).setAttribute("visible", i === item);
+                }
             }
-        })
+            const id = setInterval(() => {
+                y += 0.008;
+                if (y >= 0.6) {
+                    clearInterval(id);
 
+                    paintandquestPreviewButton.addEventListener('click', () => {
+                        paintandquestPreviewButton.setAttribute("visible", false);
+                        const testVideo = document.createElement("video");
+                        const canplayWebm = testVideo.canPlayType('video/mp4; codecs="vp8, vorbis"');
+                        if (canplayWebm == "") {
+                            document.querySelector("#paintandquest-video-link").setAttribute("src", "#paintandquest-video-mp4");
+                            document.querySelector("#paintandquest-video-mp4").play();
+                        } else {
+                            document.querySelector("#paintandquest-video-link").setAttribute("src", "#paintandquest-video-webm");
+                            document.querySelector("#paintandquest-video-webm").play();
+                        }
+                    });
+
+                    
+                }
+
+            }, 10);
+        }
+
+        const showAvatar = (onDone) => {
+            const avatar = document.querySelector("#avatar");
+            let z = 0;
+            const id = setInterval(() => {
+                z += 0.008;
+                if (z >= 0.3) {
+                    clearInterval(id);
+                    onDone();
+                }
+
+            });
+        }
+
+        AFRAME.registerComponent('mytarget', {
+            init: function () {
+                this.el.addEventListener('targetFound', event => {
+                    console.log("target found");
+                    showAvatar(() => {
+                        setTimeout(() => {
+                            showPortfolio(() => {
+                                setTimeout(() => {
+                                    showInfo();
+                                }, 0);
+                            });
+                        });
+                    });
+                });
+                this.el.addEventListener('targetLost', event => {
+                    console.log("target found");
+                });
+                //this.el.emit('targetFound');
+            }
+        });
     </script>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .example-container {
+            overflow: hidden;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        #example-scanning-overlay {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background: transparent;
+            z-index: 2;
+        }
+
+        @media (min-aspect-ratio: 1/1) {
+            #example-scanning-overlay .inner {
+                width: 50vh;
+                height: 50vh;
+            }
+        }
+
+        @media (max-aspect-ratio: 1/1) {
+            #example-scanning-overlay .inner {
+                width: 80vw;
+                height: 80vw;
+            }
+        }
+
+        #example-scanning-overlay .inner {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+
+            background:
+                linear-gradient(to right, white 10px, transparent 10px) 0 0,
+                linear-gradient(to right, white 10px, transparent 10px) 0 100%,
+                linear-gradient(to left, white 10px, transparent 10px) 100% 0,
+                linear-gradient(to left, white 10px, transparent 10px) 100% 100%,
+                linear-gradient(to bottom, white 10px, transparent 10px) 0 0,
+                linear-gradient(to bottom, white 10px, transparent 10px) 100% 0,
+                linear-gradient(to top, white 10px, transparent 10px) 0 100%,
+                linear-gradient(to top, white 10px, transparent 10px) 100% 100%;
+            background-repeat: no-repeat;
+            background-size: 40px 40px;
+        }
+
+        #example-scanning-overlay.hidden {
+            display: none;
+        }
+
+        #example-scanning-overlay img {
+            opacity: 0.6;
+            width: 90%;
+            align-self: center;
+        }
+
+        #example-scanning-overlay .inner .scanline {
+            position: absolute;
+            width: 100%;
+            height: 10px;
+            background: white;
+            animation: move 2s linear infinite;
+        }
+
+        @keyframes move {
+
+            0%,
+            100% {
+                top: 0%
+            }
+
+            50% {
+                top: calc(100% - 10px)
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <div position: fixed; top: 10px; width: 100%; text-align: center; z-index: 1; color: grey>
-        <button style="width: 30%;
-        height: 15%;
-        z-index: 10;
-        position: absolute;
-        margin: 0 0 0 0;
-        left: 35%;
-        top: 3%;
-        /* background-color: white; */
-        font-size: 100%;
-        font-weight: 600;
-        opacity: 1;">Нажмите чтобы запустить видео</button>
+    <div class="example-container">
+        <div id="example-scanning-overlay" class="hidden">
+            <div class="inner">
+                <img src="https://cdn.jsdelivr.net/gh/Str7ker/mindar@main/banki.png" />
+                <div class="scanline"></div>
+            </div>
+        </div>
+
+
+        <a-scene
+            mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/Str7ker/mindar@main/banki.mind; showStats: false; uiScanning: #example-scanning-overlay;"
+            embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights"
+            vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+            <a-assets>
+                <img id="card" src="https://cdn.jsdelivr.net/gh/Str7ker/mindar@main/banki.png" />
+                <img id="paintandquest-preview"
+                    src="https://cdn.jsdelivr.net/gh/Str7ker/mindar@main/visitka_start1.png" />
+                <video id="paintandquest-video-mp4" 
+                    src="https://cdn.jsdelivr.net/gh/Str7ker/mindar@main/alvirity.mp4"></video>
+
+
+            </a-assets>
+
+            <a-camera position="0 0 0" look-controls="enabled: false" cursor="fuse: false; rayOrigin: mouse;"
+                raycaster="far: 10000; objects: .clickable">
+            </a-camera>
+
+            <a-entity id="mytarget" mytarget mindar-image-target="targetIndex: 0">
+
+                <a-entity id="portfolio-panel" position="0 0 0">
+                    <!-- <a-text value="Portfolio" color="black" align="center" width="2" position="0 0.4 0"></a-text> -->
+
+                    <a-video id="paintandquest-video-link" webkit-playsinline playsinline width="1" height="0.552"
+                        position="0 0 0"></a-video>
+                    <a-image id="paintandquest-preview-button" class="clickable" src="#paintandquest-preview"
+                        alpha-test="0.5" position="0 0 0" height="0.552" width="1">
+                    </a-image>
+                </a-entity>
+
+
+
+            </a-entity>
+        </a-scene>
     </div>
-
-    <a-scene mindar-image="imageTargetSrc: https://cdn.jsdelivr.net/gh/Str7ker/mindar@main/banki.mind"
-        color-space="sRGB" renderer="colorManagement: true" vr-mode-ui="enabled: false"
-        device-orientation-permission-ui="enabled: false" cursor="rayOrigin: mouse;" raycaster="objects: .clickable">
-        <a-assets>
-            <video id="video" src="https://cdn.jsdelivr.net/gh/Str7ker/mindar@main/alvirity.mp4"
-                preload>
-            </video>
-        </a-assets>
-
-        <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
-        <a-entity id="target" mindar-image-target="targetIndex: 0">
-            <a-plane class="clickable" material="src: #video" position="0 0 0" height="0.552" width="1" rotation="0 0 0"
-                video-controller webkit-playsinline playsinline>
-            </a-plane>
-        </a-entity>
-    </a-scene>
 </body>
 
 </html>
